@@ -48,7 +48,7 @@ class ExpressionTree {
     return t;
   }
 }
-let postFixExp = "ab+ef*g*-";
+let postFixExp = "12+";
 document.write("Post fix form of the expression : ", postFixExp, "<br/>");
 let et = new ExpressionTree();
 let postFixArray = postFixExp.split("");
