@@ -23,8 +23,8 @@ function printPostMain(inO, preO) {
 
   return printPostOrder(inO, preO, 0, n - 1, hm);
 }
-let inOrder = [2, 1];
-let preOrder = [1, 2];
+let inOrder = [4, 2, 5, 1, 3, 6];
+let preOrder = [1, 2, 4, 5, 3, 6];
 document.write("In : [", inOrder, "]");
 document.write("<br/>Pre : [", preOrder, "]");
 document.write("<br/>Post : [");
