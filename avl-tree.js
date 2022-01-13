@@ -85,6 +85,72 @@ class AVLTree {
         }
         return node;
     }
+    deleteNode(node, key) {
+        if (node == null) return node;
+
+        if (key < node.key) {
+            node.left = this.deleteNode(node.left, key);
+        } else if (key > node.key) {
+            node.right = this.deleteNode(node.right, key);
+        } else {
+            if ((node.left == null) || (node.right == null)) {
+                let temp = null;
+                if (node.left == temp) {
+                    temp = node.right;
+                } else {
+                    temp = node.left;
+                }
+
+                if (temp == null) {
+                    temp = node;
+                    node = null;
+                } else {
+                    node = temp;
+                }
+            } else {
+                let temp = this.minValueNode(node.right);
+
+                node.key = temp.key;
+
+                node.right = this.deleteNode(node.right, temp.key);
+            }
+        }
+        if (node == null) {
+            return node;
+        }
+        node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
+
+        let balance = this.getBalancedHeight(node);
+
+        // Left left case
+        if (balance > 1 && this.getBalancedHeight(node.left) >= 0) {
+            return this.rightRotate(node);
+        }
+        // Left right case
+        if (balance > 1 && this.getBalancedHeight(node.left) < 0) {
+            node.left = this.leftRotate(node.left);
+            return this.rightRotate(node);
+        }
+        // Right right case
+        if (balance < -1 && this.getBalancedHeight(node.right) <= 0) {
+            return this.leftRotate(node);
+        }
+        // right left case
+        if (balance < -1 && this.getBalancedHeight(node.right) > 0) {
+            node.right = this.rightRotate(node.right);
+            return this.leftRotate(node);
+        }
+        return node;
+    }
+    minValueNode(node) {
+        let current = node;
+
+        /* loop down to find the leftmost leaf */
+        while (current.left != null)
+            current = current.left;
+
+        return current;
+    }
     preOrder(root) {
         if (root == null) return;
 
@@ -118,3 +184,44 @@ document.write(
     "Preorder traversal of the " + "constructed AVL tree is <br>"
 );
 tree.preOrder(tree.root);
+
+// Delete 40
+tree.deleteNode(tree.root, 40);
+
+document.write("</br>");
+document.write("Preorder traversal after " +
+    "deletion of 40 :" + "</br>");
+tree.preOrder(tree.root);
+
+let tree2 = new AVLTree();
+
+tree2.root = tree2.insert(tree2.root, 9);
+tree2.root = tree2.insert(tree2.root, 5);
+tree2.root = tree2.insert(tree2.root, 10);
+tree2.root = tree2.insert(tree2.root, 0);
+tree2.root = tree2.insert(tree2.root, 6);
+tree2.root = tree2.insert(tree2.root, 11);
+tree2.root = tree2.insert(tree2.root, -1);
+tree2.root = tree2.insert(tree2.root, 1);
+tree2.root = tree2.insert(tree2.root, 2);
+
+/* The constructed AVL Tree would be 
+      9 
+      / \ 
+      1 10 
+      / \ \ 
+      0 5 11 
+      / / \ 
+      -1 2 6 
+      */
+document.write(
+    "<br/><br/>Preorder traversal of the constructed AVL tree is : " +
+    "</br>");
+tree2.preOrder(tree2.root);
+
+tree2.deleteNode(tree2.root, 10);
+
+document.write("</br>");
+document.write("Preorder traversal after " +
+    "deletion of 10 :" + "</br>");
+tree2.preOrder(tree2.root);
